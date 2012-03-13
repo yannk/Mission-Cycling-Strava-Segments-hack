@@ -42,7 +42,7 @@
 
         $("form#hhDateSelector").submit(function() {
             var date = $("#date").val();
-            //$("#data").html(''); // clear previous data
+            $("#data").html(''); // clear previous data
             bestHH(emit, date);
             return false;
         });
