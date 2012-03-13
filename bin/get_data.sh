@@ -27,7 +27,7 @@ function segment_url() {
     echo "$server/api/v1/segments/$segment_id/efforts?clubId=$club_id&best=true&startDate=$day&endDate=$day"
 }
 
-day=${1:-`date "+%Y-%m-%d"`}
+day=${1:-`TZ=America/Los_Angeles date "+%Y-%m-%d"`}
 cat $confdir/segments.txt |
     while read segment_id; do
         download $segment_id $day
