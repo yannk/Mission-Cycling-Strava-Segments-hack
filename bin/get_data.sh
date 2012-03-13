@@ -15,12 +15,7 @@ function download() {
     local segment_id=$1
     local day=$2
 
-    ## split day date
-    OLDIFS=$IFS
-    IFS="-" read y m d <<< "$day"
-    IFS=$OLDIFS
-
-    local dir="$datadir/$y/$m/$d"
+    local dir="$datadir/$day"
     mkdir -p $dir || (echo "error creating directory: $dir" && exit -1)
     local url=$(segment_url $segment_id $day)
     curl -s -o $dir/$segment_id.json $url

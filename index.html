@@ -5,7 +5,7 @@
 <script type="text/javascript">
     function bestSegmentEffortByClub(emit, clubId, segmentId, startDate, endDate) {
         //http://www.strava.com/api/v1/segments/229781/efforts?clubId=15&best=true&startDate=2011-03-05&endDate=2011-03-06"
-        var uri = "./data/TODO";
+        var uri = "./data/" + startDate + "/" + segmentId + ".json;
         $.getJSON(uri, function(data) {
                 $.each(data.efforts, function(i, item) {
                     emit(item);
