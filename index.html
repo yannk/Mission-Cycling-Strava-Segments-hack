@@ -32,7 +32,8 @@
     $(document).ready(function() {
         var emit = function(item) {
             var items = [];
-            items.push('<li id="' + item.id + '">' + item.athlete.name + '</li>');
+            var result = item.athlete.name + " <span class=\"elapsedTime\">" + item.elapsedTime + "</span>";
+            items.push('<li id="' + item.id + '">' + result + '</li>');
             $('<ul/>', {
                 'class': 'effort-list',
                 html: items.join('')
