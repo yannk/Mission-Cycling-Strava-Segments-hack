@@ -3,16 +3,32 @@
 <title>Strava Segment Test</title>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript">
-    function bestSegmentEffortByClub(emit, clubId, segmentId, startDate, endDate) {
-        //http://www.strava.com/api/v1/segments/229781/efforts?clubId=15&best=true&startDate=2011-03-05&endDate=2011-03-06"
-        var uri = "./data/" + startDate + "/" + segmentId + ".json;
-        $.getJSON(uri, function(data) {
+    function bestSegmentEffortByClub(emit, segmentId, date) {
+        //http://www.strava.com/api/v1/segments/229781/efforts?clubId=15&best=true&startDate=2011-03-05&endDate=2011-03-05"
+        var uri = "./data/" + date + "/" + segmentId + ".json";
+        $.ajax({
+            url: uri,
+            dataType: 'json',
+            success: function(data) {
+                if (!data || data.efforts.length == 0) {
+                    alert("no data for this day. run get_data.sh " + date);
+                }
                 $.each(data.efforts, function(i, item) {
                     emit(item);
                 })
+            },
+            statusCode: {
+                404: function() {
+                    alert("no data for this day. run get_data.sh " + date);
+                }
+            }
         });
-
     }
+
+    function bestHH(emit, date) {
+        return bestSegmentEffortByClub(emit, '229781', date);
+    }
+
     $(document).ready(function() {
         var emit = function(item) {
             var items = [];
@@ -20,12 +36,26 @@
             $('<ul/>', {
                 'class': 'effort-list',
                 html: items.join('')
-            }).appendTo('body');
+            }).appendTo('#data');
         };
-        bestSegmentEffortByClub(emit);
+
+        $("form#hhDateSelector").submit(function() {
+            var date = $("#date").val();
+            //$("#data").html(''); // clear previous data
+            bestHH(emit, date);
+            return false;
+        });
     });
 </script>
 </head>
+
 <body>
+    <form id="hhDateSelector">
+        <label for="date">Enter date for HH Leaderboard</label>
+        <input type="text" id="date" value="2012-03-08"/>
+        <input type="submit" />
+    </form>
+    <div id="data">
+    </div>
 </body>
 </html> 
